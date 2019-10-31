@@ -3,13 +3,13 @@
            https://api.github.com/users/<your name>
 */
 // const entryPoint = document.querySelector('.cards');
-// axios.get('https://api.github.com/users/brittanymae01').then(response => {
-//   const newInfo = createCard(response.data);
-//   entryPoint.append(newInfo);
-// })
-//   .catch(error => {
-//     console.log('This data was not returned', error);
-//   })
+axios.get('https://api.github.com/users/brittanymae01').then(response => {
+  createCard(response.data);
+  // entryPoint.append(newInfo);
+})
+  .catch(error => {
+    console.log('This data was not returned', error);
+  })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -32,7 +32,22 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'grifmang',
+  'msearles25',
+  'imxande',
+  'robby-o',
+  'davidhennig'
+];
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`).then(response => {
+    createCard(response.data);
+  })
+})
+  .catch(error => {
+    console.log('This data was not returned', error);
+  })
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -74,7 +89,7 @@ function createCard(object) {
   cardInfo.appendChild(userName);
   cardInfo.appendChild(location);
   cardInfo.appendChild(profile);
-  profile.appendChild(profileLink);
+
   cardInfo.appendChild(followers);
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
@@ -88,11 +103,16 @@ function createCard(object) {
   name.textContent = object.name;
   userName.textContent = object.login
   location.textContent = `Location: ${object.location}`;
-  profileLink.textContent = `Profile: ${object.html_url}`;
+  profile.textContent = `Profile: `;
   profileLink.href = object.html_url;
+  profileLink.textContent = object.html_url;
   followers.textContent = `Followers: ${object.followers}`;
   following.textContent = `Following: ${object.following}`;
   bio.textContent = `Bio: ${object.bio}`;
+
+  profile.appendChild(profileLink);
+
+  document.querySelector('.cards').appendChild(card);
 
   return card;
 
